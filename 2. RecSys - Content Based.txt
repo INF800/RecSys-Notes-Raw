@@ -1,0 +1,110 @@
+
+
+1. CONTENT BASED RECOMMENDATIONS
+------------------------------
+
+- Most simplest of all approaches
+- Recommending based on properties of items instead of using aggregate user behavior
+- For example, recommending movies in same genere
+
+
+COSINE SIMILARITY METRIC
+-------------------------
+
+- Ideal for content based recommendations
+- To find similarity of genere of any given pair of movies
+- Other methods include
+	- Eucledian distance - measure actual distance
+	- Pearson Correlation - Similar to cosine metric but mean values are used
+
+
+........................................................................................
+	def cosSimilarityGenre(self, movie1, movie2, generes):
+		
+		genere1 = generes[movie1]
+		genere2 = generes[movie2]
+
+		sumxx, sumxy, sumyy = 0, 0, 0
+
+		for i in range(len(generes)):
+			x = genere1[i]
+			y = genere2[i]
+
+			sumxx += x*x
+			sumxy += x*y
+			sumyy += y*y
+
+			return sumxy/math.sqrt(sumxx*sumyy)
+..........................................................................................
+
+Note: You may do some string wrangling and get 'years' from data set to recommend with it's help
+
+
+
+SIMILARITIES BASED ON RELEASE YEARS ALONE?
+------------------------------------------
+
+- Art for Recommendation Systems
+- Nature of data you have: How far the two movies have to be to be substantially different?
+- Mathematical function that smoothly scales timeline into range zero to one
+
+
+[TIME SIMILARITY]
+................................................................................................
+	def computeYearSimilarity(self, movie1, movie2, years, timeInterval=10.0)
+		diff = abs(years[movie1] - years[movie2])
+		sim = math.exp(-diff/timeInterval)
+		
+		return sim
+.................................................................................................
+
+Note: Test as many functions as possible to get best recommendations
+
+===================================================================================================
+
+
+
+
+
+
+HOW TO TURN THESE SIMILARITIES(Genere, Time) BETWEEN MOVIES BASED ON THEIR ATTRIBUTES INTO
+ACTUAL RATING PREDICTIONS?
+-------------------------------------------------------------------------------------------
+
+Remember: Our recommendation algorithms in surpriselib have ONE job - Predict 
+	  rating for given user for given movie
+
+- K Nearest Neighbours[KNN] Algorithm - Fancy name for a simple idea
+	Selecting N number of things that are close to the things you are interested in
+
+- Step 1: Find similarity scores between the movie and all the movies user has rated.
+- Step 2: Sort and chose top 40 nearest neighbours
+- Step 3: Take wieghted average and predict the ratings
+
+
+NOTE
+----
+For topN recommendations,  the relative order of predicted ratings matter. Not predicted Rating itself.
+If you are really striving for fine-tuning prediction accuracy, there are ways to normalize our 
+predicted ratings to get them into the range we want. For example, Log-Quantile normalisation does the 
+trick BUT NOBODY CARES IN REAL WORLD. ONLY TOP-N ARE CARED ABOUT!!!
+
+
+mise en scene
+-------------
+
+IDEA: To extract extract properties from film itself - quantified and analyzed for recommendations.
+
+- Does not favour accuracy but increases diversity
+- Increased diversity may also lead to random stuff recommendation
+
+
+HOW TO MAKE BETTER MODELS?
+----------------------------
+
+- Use popularity rankings as a tie breaker
+- "Release Year" Use it
+- Try new ideas!
+
+
+NOTE: Always test with A/B Online tests!

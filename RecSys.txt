@@ -1,0 +1,21 @@
+
+
+2. NEIGHBOURHOOD BASED COLLABORATIVE FILTERING
+-------------------------------------------
+
+- Leveraging behaviour of other users to know what you might enjoy.
+- Finding people like you and recommend stuff they liked
+- Or, recommending stuff that other people bought after buying what you have bought.
+
+
+PRODUCE SIMILAR ITEMS/PEOPLE
+----------------------------
+
+- STEP 1: Measure similarity between things or similarity between people
+		- Similarity Metrics (Cosine Similarity)
+		- Big challenge on measuring similarities based behaviour data - "SPARSITY"
+			- There are so many movies that most of the movies aren't watched.
+			- It is tough to work with collaborative filtering unless we have lots of behaviour data
+			- We can not perform cossine similarity if no items/people are in common. In other words,
+			  how can we find similarity if there is nothing in similar? 
+			- 

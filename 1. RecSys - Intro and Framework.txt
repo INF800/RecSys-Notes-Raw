@@ -1,0 +1,139 @@
+
+Recommendation System
+-------------------------
+
+Let's naively understand what Recomendation Systems are with a simple example - Recommendation Systems are used
+to recommend articles, music, people or restaurants to it's users.
+
+Recommendation Systems with high performance lead to mutual benefits of users as well as the company implementing
+it.
+
+===========================================================================================================
+
+HOW DO RecSys WORK 
+-------------------
+
+- Starts with you! ( Your Data )
+- Data about you can be collected in two different ways:
+	- EXPLICIT DATA
+		* Feedbacks - Not everyone bothers to fill forms or take surveys
+		* One person's point of view may vary from another person's point of view depending on
+		  socio-economic-political and geographical differences
+	- IMPLICIT DATA
+		* Understanding users through their 'click-data' or 'stream-data'
+		* Prone to frauds
+		* Amazon has so much implicit data that it doesn't need better algorithms. Simple algorithms
+		  will work like charm!
+
+TAKE AWAY : RecSys cannot produce good result until it has good data to work with. LOTS OF IT!! (Like in Amazon 
+	    example )
+
+============================================================================================================
+
+TopN Recommendation System
+----------------------------
+
+
+ [INDIVIDUAL INTERESTS] -------> [1.CANDIDATE GENERATION] <-----------> [ITEM SIMILARITIES]
+					     |
+					     |
+					     V
+				   [2.CANDIDATE RANKING]
+					     |
+					     |
+					     V
+				       [3.FILTERING]
+
+
+Note : 'Individual Interests' are generally normalized(with z-score or mean centering or other techniques) to be 
+  	made comparable. But real world data is too sparce to normalize effectively.
+
+- STEP 1: Recommendations are generated with the help of actual historical data of people who bought 'things'
+	  later the a 'thing' was bought.
+- STEP 2: Candidates are ranked(if it comes more than once) and sorted
+- STEP 3: Remove already appeared, offensive ones and shortlist the candidates to 'N'
+
+Note: The above architecture is just one of the many that can be built. For example another architecture can be
+      as shown below.
+
+
+				 [1.CANDIDATE GENERATION] <-----------> [RATING PREDICTIONS]
+					     |
+					     |
+					     V
+				   [2.CANDIDATE RANKING]
+					     |
+					     |
+					     V
+				       [3.FILTERING]
+	
+
+================================================================================================================ 
+
+EVALUATION OF RecSys
+--------------------
+
+Just defining what makes a good recommendation system is a HUGE PROBLEM that's really central to the feild.
+
+Building Recommendation Systems are 'as much as art as science' as it is difficult to measure how good they
+are(Esp. when developing algorithms offline)
+
+===============================================================================================================
+
+
+
+
+
+RecSys Framework
+-----------------
+
+- surpriselib is a good library to work on Recommendation systems
+- But, we will build on top of it.
+
+	[BASE CLASS]
+		- [SVD]			
+		- [KNN BASIC]		 
+		- [SVDpp]
+		- [CUSTOM]
+
+Note: All the above algorthims inherit from the base class. Only a few are listed but many are available.
+
+
+
+CREATING CUSTOM ALGORITHM (Compatible with AlgoBase) - 'SURPRISINGLY' EASY!
+---------------------------------------------------------------------------
+
+- Create a new class that inherits from AlgoBase
+- Ideal but not necessary to evaluate accuracy offline.
+
+
+[IMPLEMENTING 'estimate' FUNCTION:]
+........................................................................................
+	class MyCustomAlgorithm(AlgoBase):
+
+		def __init__(self):
+			AlgoBase.__init__(self)
+
+		def estimate(self, user, item):
+			return( predictFor(user, item) )  # Ranking prediction
+........................................................................................
+
+
+['Evaluator' - Single class for all operations - Simplifies comparison of algorithms]
+........................................................................................
+	Evaluator(DataSet)
+
+		EvaluationData(DataSet):
+			GetTrainSet() 	# Slices data for evaluation
+			GetTrainSet()
+
+		EvaluationAlgorithm(AlgoBase)
+			# Algorithm
+			# Evaluation
+			# Recommender Metrics
+
+..........................................................................................
+
+
+
+=========================================================================================================
