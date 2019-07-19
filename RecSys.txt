@@ -10,12 +10,22 @@
 
 PRODUCE SIMILAR ITEMS/PEOPLE
 ----------------------------
-
-- STEP 1: Measure similarity between things or similarity between people
+Measuring similarity between things or similarity between people
 		- Similarity Metrics (Cosine Similarity)
 		- Big challenge on measuring similarities based behaviour data - "SPARSITY"
 			- There are so many movies that most of the movies aren't watched.
 			- It is tough to work with collaborative filtering unless we have lots of behaviour data
 			- We can not perform cossine similarity if no items/people are in common. In other words,
 			  how can we find similarity if there is nothing in similar? 
-			- 
+			- Storing sparse data consumes a lot of space. This problem is solved with sparse arrays
+		- QUALITY AND QUANTITY OF DATA IS MORE IMPORTANT THAN THE ALGORITHM WE CHOSE
+
+
+OTHER WAYS TO COMPUTE SIMILARITY
+--------------------------------
+	- Cosine Similarity Metric
+	- Adjusted Cosine Similarity
+	- Pearson Similarity 
+	- Spearman Rank Correlation
+	- MSD Similarity
+	- Jaccard Similarity
