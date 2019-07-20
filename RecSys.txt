@@ -67,3 +67,18 @@ Item Based KNN
 
 
 [Formula]
+	- Better off with smaller approach
+	- This is more like shoveling into framework
+
+Note: Above all, offline metrics cannot be pure base line for choosing one framework
+
+
+
+
+TRANSLATION BASED RECOMMENDATION(2017)
+--------------------------------------
+ - Watched tom cruise 1 --> 2 --> 3 --> 4th tom cruise
+		- Outperforms all other methods (Hit Rate)
+		- Bleeding edge (Promising)
+		- Code and data available
+
