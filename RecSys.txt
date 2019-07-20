@@ -1,83 +1,69 @@
 
 
-1. 'USER BASED' COLLABORATIVE FILTERING
-----------------------------------------
+3. KNN RECOMMENDATIONS
+-----------------------
+
+- Collaborative filtering applied to recommender system for "Rating Predictions"
 
 
-- Easier to understand 
-- KNN Used
-
-Note: Math behind cosine similarity is such that even if 1 movie is in common, no matter what, we end up 
-      in 100% Similarty
-
-- Even if Bob loved star wars and Ann hated it, In SPARSE DATA SITUATION - Both 100% similar!!!
-	- Sparce data leads to problems with collaborative filering in general
-	- Avoid weird stuff and put threshold and preprocess data
-
-
-SORTING
-------- 
-
-- Chose which items are best to predict
-	- Score them somehow
-	- Taking ratings under consideration - Ok!
-	- Recommend similar things they love. Not similar things they hate. So, normalize it!
-- Strenghten relationship if 'items' appear in more than one neighbour
+	[Candidade Generation] <-----------> [RANKING PREDICTION]
+		   |
+		   |
+		   V
+	   [CANDIDATE RANKIMG]
+		   |
+		   |
+		   V
+	      [FILTERING]
+		   |
+		   |
+		   V
+     [] [] [] [] [] [] [] [] [] [] []
+	       Top-N-List  
 
 
-FILTER
-------
-
-- Remove already seen items or the items that are offensive.
-
-
-
-	[User-Item Rated Matrix]
-		  |
-		  |
-		  |
-		  V
-	 [User similarity Matrix] (only time consuming process)
-		  |
-		  |lookup similar users
-		  |
-		  V
-	  [Candidate Generation]
-		  |
-		  |
-		  V
-	    [Scoring or Sorting]
-		  |
-		  |
-		  V
-	     [Filtering]
-
-
-Note: User based collaborative fitering is strictly used for generating topN recommendations.
-      At no point we tried predicting user ratings (For this, use KNN).
-      Hence, our framework built on surpriselib revolves around rating predictions. But still we can use Hit Rate
-
-
-CONDITIONS FOR COLLABORATIVE FILTERING
---------------------------------------
-
-	- Sparse data - NO!
-	- Quality and quantity of data important
-	- less time consumption (Compared to SVD or Random Algorithm)
-	- High efficiency
-	- Only for TopN Recommendations
-	- Not for user rating predictions (But can if want to)
-	- That's why Amazon with huge amounts of data uses this method
-
-Note: Even 100,000 Ratings is considered relatively sparse!
-      (But showed better performance in our experiments compared to Content Based)
+This obviously is a terribly efficient approach. But since we are predicting rating values, we can measure
+offline accuracy of system using Test/Train or Cross-Validation - Useful in research world!
 
 
 
 
+User Based KNN
+---------------
+
+	[Find k most similar users who rated this item]
+			      |
+			      |
+			      V
+	[Compute mean similarity scoreweighted by ratings]
+			      |
+			      |
+			      V
+		      [Rating Prediction]
+
+
+- Still uses user-user similarity matrix at it's core
+- We are reaching deeper into data and trying to make rating predictions
+- Complex approach - Which is a bad thing!!
+
+
+[FORMULA]
 
 
 
 
-2. 'ITEM BASED' COLLABORATIVE FILTERING
-----------------------------------------
+Item Based KNN
+---------------
+
+	[Finding k most similar items also rated by this user]
+				|
+				|
+				V
+	  [Compute mean similarity score weighted by ratings]
+				|
+				|
+				V
+		       [Rating Predictions]
+
+
+[Formula]
