@@ -26,5 +26,43 @@ Matrix Factorisation
   doesn't know what to call newly found features - Just described by matrices
 
 
-MAIN IDEA:
+MAIN IDEA: Describe users and items as combinations of different amounts of each other.
+		eg. Bob = 50% Action and 20% Comedy
+		- Matching movies with these attributes - Good for predicting
+
+
+
+SPARSE MATRIC ---> CHALLENGE --> PCA
+
+
+
+
+Principal Component Analysis
+-----------------------------
+
+- Dimentionality reduction (Can't say what newly-reduced-dimensions mean)
+- Feature extraction tool
+
+
+PCA on User Ratings
+--------------------
+
+	PCA can boil down user-item rating matrix much smaller dimensions that best
+	describes VARIANCE in data
+
+- Often, the dimensions they find correspond to features humans have learnt to associate with items (eg. Acton-ey)
+- Whatever it is about movies that causes individuals to rate them differently, PCA extracts and finds those
+  'Latent Features'
+
+
+
+[BOXES AND EXPLANATIONS]
+
+Note: if R (Orignal Matrix) has some missing values, we can reconstruct R by filling blank values!!
+      R = M Sigma(U-Transpose)	
+
+
+Sigma Matrix
+------------
+
 
