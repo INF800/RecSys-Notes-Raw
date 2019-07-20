@@ -1,0 +1,30 @@
+
+
+4. MATRIX FACTORISATION
+------------------------
+
+- Collaborative filtering is a good method. Even for ... . So, why alternative approach?	
+	- It is sensitive to NOISE DATA and SPARSE DATA
+	- Good results only if
+		- Large dataset
+		- Nice and clean
+
+
+MODEL BASED METHOD
+------------------
+
+- Instead of finding items or users similar to each other apply ML and DS
+	- Train our Model with data
+	- Predict using Model
+
+
+Matrix Factorisation
+---------------------
+
+- It has many sub categories of techniques
+- CREEPY! Manages to find broader feature of users/items on their own (eg. Actioin or Romantic) although math
+  doesn't know what to call newly found features - Just described by matrices
+
+
+MAIN IDEA:
+
