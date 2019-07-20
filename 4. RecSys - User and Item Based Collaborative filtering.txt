@@ -1,0 +1,111 @@
+
+
+1. 'USER BASED' COLLABORATIVE FILTERING
+----------------------------------------
+
+
+- Easier to understand 
+- KNN Used
+
+Note: Math behind cosine similarity is such that even if 1 movie is in common, no matter what, we end up 
+      in 100% Similarty
+
+- Even if Bob loved star wars and Ann hated it, In SPARSE DATA SITUATION - Both 100% similar!!!
+	- Sparce data leads to problems with collaborative filering in general
+	- Avoid weird stuff and put threshold and preprocess data
+
+
+SORTING
+------- 
+
+- Chose which items are best to predict
+	- Score them somehow
+	- Taking ratings under consideration - Ok!
+	- Recommend similar things they love. Not similar things they hate. So, normalize it!
+- Strenghten relationship if 'items' appear in more than one neighbour
+
+
+FILTER
+------
+
+- Remove already seen items or the items that are offensive.
+
+
+
+	[User-Item Rated Matrix]
+		  |
+		  |
+		  |
+		  V
+	 [User similarity Matrix] (only time consuming process)
+		  |
+		  |lookup similar users
+		  |
+		  V
+	  [Candidate Generation]
+		  |
+		  |
+		  V
+	    [Scoring or Sorting]
+		  |
+		  |
+		  V
+	     [Filtering]
+
+
+Note: User based collaborative fitering is strictly used for generating topN recommendations.
+      At no point we tried predicting user ratings (For this, use KNN).
+      Hence, our framework built on surpriselib revolves around rating predictions. But still we can use Hit Rate
+
+
+CONDITIONS FOR COLLABORATIVE FILTERING
+--------------------------------------
+
+	- Sparse data - NO!
+	- Quality and quantity of data important
+	- less time consumption (Compared to SVD or Random Algorithm)
+	- High efficiency
+	- Only for TopN Recommendations
+	- Not for user rating predictions (But can if want to)
+	- That's why Amazon with huge amounts of data uses this method
+
+Note: Even 100,000 Ratings is considered relatively sparse!
+      (But showed better performance in our experiments compared to Content Based)
+
+
+
+
+
+
+
+
+2. 'ITEM BASED' COLLABORATIVE FILTERING
+----------------------------------------
+
+- KNN is used
+- Similarities between ITEMS can be sometimes BETTER than similarities between PEOPLE
+	- Items show permenance wheras, people change with time
+	- Items are fewer in numbers to deal with. 
+		- n(ITEMS) <<<< n(USERS)
+		- Smaller similarity matrix
+		- Amazon and Netflix use it!
+	- Better for New users
+		- Selecting just one item will let us provide recommendations
+		- But for user based, new user has to wait until next build of similarity matrix (which is 
+		  the only computational part of the framework)
+
+Note: 
+-----
+	- Here, we have more recommendations compared to 'user-based'. Intersesting!
+	- In practice, we have got all movies from 90s recommended as there was bias in given data - Caution needed!
+		- Gave bad recommendations
+		- Test it out on real people - A/B Tests
+	- Even small changes in algorithms affect recommendations
+	- See Exercises
+		- In evaluate
+			- 0.055 (or 5.5%) is pretty damn good (Hit Rate)
+			- 0.005 (or 0.5%) is pretty bad but ironic because of biased data
+			- Take Away: Hard to evaluate dataset offline. Especially with only historical, small dataset
+
+
+
