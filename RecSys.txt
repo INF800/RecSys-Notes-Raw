@@ -1,84 +1,100 @@
 
 
-3. KNN RECOMMENDATIONS
------------------------
+4. MATRIX FACTORISATION
+------------------------
 
-- Collaborative filtering applied to recommender system for "Rating Predictions"
-
-
-	[Candidade Generation] <-----------> [RANKING PREDICTION]
-		   |
-		   |
-		   V
-	   [CANDIDATE RANKIMG]
-		   |
-		   |
-		   V
-	      [FILTERING]
-		   |
-		   |
-		   V
-     [] [] [] [] [] [] [] [] [] [] []
-	       Top-N-List  
+- Collaborative filtering is a good method. Even for ... . So, why alternative approach?	
+	- It is sensitive to NOISE DATA and SPARSE DATA
+	- Good results only if
+		- Large dataset
+		- Nice and clean
 
 
-This obviously is a terribly efficient approach. But since we are predicting rating values, we can measure
-offline accuracy of system using Test/Train or Cross-Validation - Useful in research world!
+MODEL BASED METHOD
+------------------
+
+- Instead of finding items or users similar to each other apply ML and DS
+	- Train our Model with data
+	- Predict using Model
+
+
+Matrix Factorisation
+---------------------
+
+- It has many sub categories of techniques
+- CREEPY! Manages to find broader feature of users/items on their own (eg. Actioin or Romantic) although math
+  doesn't know what to call newly found features - Just described by matrices
+
+
+MAIN IDEA: Describe users and items as combinations of different amounts of each other.
+		eg. Bob = 50% Action and 20% Comedy
+		- Matching movies with these attributes - Good for predicting
 
 
 
-
-User Based KNN
----------------
-
-	[Find k most similar users who rated this item]
-			      |
-			      |
-			      V
-	[Compute mean similarity scoreweighted by ratings]
-			      |
-			      |
-			      V
-		      [Rating Prediction]
-
-
-- Still uses user-user similarity matrix at it's core
-- We are reaching deeper into data and trying to make rating predictions
-- Complex approach - Which is a bad thing!!
-
-
-[FORMULA]
+SPARSE MATRIC ---> CHALLENGE --> PCA
 
 
 
 
-Item Based KNN
----------------
+Principal Component Analysis
+-----------------------------
 
-	[Finding k most similar items also rated by this user]
-				|
-				|
-				V
-	  [Compute mean similarity score weighted by ratings]
-				|
-				|
-				V
-		       [Rating Predictions]
+- Dimentionality reduction (Can't say what newly-reduced-dimensions mean)
+- Feature extraction tool
 
 
-[Formula]
-	- Better off with smaller approach
-	- This is more like shoveling into framework
+PCA on User Ratings
+--------------------
 
-Note: Above all, offline metrics cannot be pure base line for choosing one framework
+	PCA can boil down user-item rating matrix much smaller dimensions that best
+	describes VARIANCE in data
+
+- Often, the dimensions they find correspond to features humans have learnt to associate with items (eg. Acton-ey)
+- Whatever it is about movies that causes individuals to rate them differently, PCA extracts and finds those
+  'Latent Features'
 
 
 
+[BOXES AND EXPLANATIONS]
 
-TRANSLATION BASED RECOMMENDATION(2017)
---------------------------------------
- - Watched tom cruise 1 --> 2 --> 3 --> 4th tom cruise
-		- Outperforms all other methods (Hit Rate)
-		- Bleeding edge (Promising)
-		- Code and data available
+Note: if R (Orignal Matrix) has some missing values, we can reconstruct R by filling blank values!!
+      R = M Sigma(U-Transpose)	
+
+
+Sigma Matrix
+-------------
+
+	Simple diagonal matrix only used to scale the values we get into proper scale
+
+- We can multiply this sigma matrix with M or U and still R will just be product of two matrices
+- Reconstruct R to get ratings of all users for all items!
+- We can even predict ratings using dot products of 
+		M Sigma(U-Transpose) 
+
+
+
+
+
+SVD - Singular Value Decomposition
+-----------------------------------
+
+	A way of computing M, Sigma, U-Transpose all at once efficiently.
+	Get all 3 factors in one shot!
+
+	- Very accurate results
+	- Used widely during Netflix prize competion
+
+
+But wait!
+	Just before applying PCA to original matrix R, how to deal with missing values?
+	-You may fill missing values with averages of some sort... but there is a better way!
+
+	Prediction: [ R(Bob, starwars) = M(Bob) . U-Transpose(Starwars) ]
+
+	Assume we have some ratings for any given row/column in M and U-Transpose
+		- We can treat this as 'minimisation of profits'
+		- Find values of those complete rows and columns that best minimizes errors in known ratings R
+		- Use SGD (Just one way to do it)
+		- Apache Spark - different technique - ALS (Alternating Least Squares)
 
