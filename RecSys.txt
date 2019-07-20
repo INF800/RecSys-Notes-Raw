@@ -98,3 +98,25 @@ But wait!
 		- Use SGD (Just one way to do it)
 		- Apache Spark - different technique - ALS (Alternating Least Squares)
 
+
+Note: You might be confused here because we are talking about learning the values as matrices in M and U - Actually 
+      we are predicting ratings and not computing them directly which is what SVD does. We are not doing real 
+      SVD Recommendations because SVD can't perform on missing data.
+      Hence, it is 'SVD-Inspired-algoithm' not SVD itself. Winner of Netflix prize was a variation of SVD - SVD++
+
+
+TIPS:
+	- You can see source code for SVD algrithm used in surpiselib in github. But too complex to understand
+	- Never write your own algorithm. Odds are too high that you will mess up somewhere. Use third party
+	  library that has been used and validated by others.
+
+
+Difference - SVD and SVD++
+---------------------------
+
+	- Actual loss function used during SGD
+	- In SVD++ :  Merely rating item at all is an indication of some sort of interest in the item.
+		      No matter what the rating was,
+	- SVD++ outperformed SVD
+	- Worked really well!!
+	- Spooky/Creepy - Latent features
