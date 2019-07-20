@@ -1,0 +1,85 @@
+
+
+2. NEIGHBOURHOOD BASED COLLABORATIVE FILTERING
+-------------------------------------------
+
+- Leveraging behaviour of other users to know what you might enjoy.
+- Finding people like you and recommend stuff they liked
+- Or, recommending stuff that other people bought after buying what you have bought.
+
+
+PRODUCE SIMILAR ITEMS/PEOPLE
+----------------------------
+Measuring similarity between things or similarity between people
+		- Similarity Metrics (Cosine Similarity)
+		- Big challenge on measuring similarities based behaviour data - "SPARSITY"
+			- There are so many movies that most of the movies aren't watched.
+			- It is tough to work with collaborative filtering unless we have lots of behaviour data
+			- We can not perform cossine similarity if no items/people are in common. In other words,
+			  how can we find similarity if there is nothing in similar? 
+			- Storing sparse data consumes a lot of space. This problem is solved with sparse arrays
+		- QUALITY AND QUANTITY OF DATA IS MORE IMPORTANT THAN THE ALGORITHM WE CHOSE
+
+
+OTHER WAYS TO COMPUTE SIMILARITY
+--------------------------------
+	- Cosine Similarity Metric
+
+	- Adjusted Cosine Similarity
+	- Pearson Similarity 
+		(Different names for same things)
+
+	- Spearman Rank Correlation (Same as Pearson but with ranks)
+	- MSD Similarity (Easier to understand but low performance)
+	- Jaccard Similarity (Good for implicit data. We can apply cosine similarity to Jaccard!)
+
+
+i. Adjusted Cosine Similarity
+------------------------------
+
+[Formula]
+
+- Applicable mostly for similarity of users based on their ratings
+- Takes into consideration about varying baselines for ratings. Adjusted cosines attempt to normalize these differences.
+- (xi - xBar) : We are looking at variance from the mean of each user rating insrtead of raw ratings.
+			- Sounds good but data sparsity can mess you up
+			- Worths the experiment if data is NOT sparse
+
+ii. Pearson Similarity
+------------------------
+
+[Formula]
+
+- Difference in ratings and average for all users for the given item.
+- In real world of sparse data - Good Approach
+- SIMILARITY BETWEEN PEOPLE BY HOW MUCH THEY DIVERGE FROM AVERAGE PERSON'S BEHAVIOUR.
+		i.e. People who hate star wars will all have same pearson score.
+- Surpriselib:
+		- Adj Cosine --> User Based Pearson Similarity
+		- Pearson Similarity --> Item Based Pearson Similarity
+
+iii. Spearman Rank Correlation
+------------------------------
+
+ADVANTAGE: DEALS WITH ORDINAL ORDINAL DATA EFFECTIVEY (Never used in real world)
+
+- Same as Pearson Similarity but
+- Instead of using rating scores directly, use Ranks.
+- Interchanging 'Avg rating(iBar)' with 'Rank amongst all movies' doesn't worth it
+
+
+iv. Mean Squared Difference Similarity
+--------------------------------------
+
+- MSD(x, y): Computes error i.e how different user ratings are 
+- MSDSim(x, y): Computes similarity
+
+Note: Cosine is better than MSDSim
+
+v. Jaccard Similarity
+----------------------
+
+- Since it is just counting things up, we are not looking actual rating values at all here. This leads to loss 
+  of pretty important informatiom.
+- But with implicit ratings, we have 'did'/'didn't' not 'ratings'
+	In that case Jaccard can be a reasonable choice - Fast to compute
