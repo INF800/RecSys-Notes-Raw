@@ -1,7 +1,7 @@
 
 
 
-5. Deep Learning
+Deep Learning
 -----------------
 
 IS DEEPLEARNING A OVERKILL?
@@ -23,4 +23,75 @@ Hence, DL CAN BE APPLIED TO RECOMMENDATION SYSTEMS
 
 
 
+5. RESTRICTED BOLTZMANN MACHINES
+--------------------------------
 
+	- The grand daddy of neural nets in recommender systems 
+	- Since 2007 - long before the resurgance of AI
+	
+
+Netflix Prize: 
+	- Matrix Factorisation and RBMs had best performance as measured by RMSE. Scores were almost identical.
+	- Netflix found - By combining Matrix Factorisation with RBMs - EVEN BETTER RESULTS!!!
+
+Paper: Restricted Boltzmann Machines for Collaborative Filtering (Toronto)
+
+
+
+
+
+RBM
+---
+
+	- One of simplest neural nets
+	- 2 layers
+		i. Visible
+		ii. Hidden
+
+[FIGURE]
+
+Note: Neurons in same layer cannot communicate with each other directly. Hence termed "Restricted". This architecture
+      is common in modern nets. But unusual back then and didn't exist in earlier boltzmann machines
+
+- Termed 'Boltzmann' because of use of Boltzmann Distributin Function (Used as sampling function)
+- Trained by
+	i. Forward pass
+	ii. Backward pass - inputs reconstructed
+  (The above steps are performed iteratively until weights and biases reduce error significantly)
+
+
+RBM Backward Pass
+------------------
+
+[Figure]
+
+- We share weights for forward and backward pass
+- But use two sets of biases 
+	i. Hidden Bias - Used in forward pass
+	ii. Visible Bias - Used in backward pass
+- Main difference is that we read outputs at lower level during backward pass; Opposed to taking them the other side in modern
+  nets
+
+
+RBM ----> MNIST ----> Works well and good
+
+RBM ----> RecSys ----> Weird Results!
+		       - Because of SPARSE DATA
+		         (Very sparse in most of the cases)
+
+
+How to deal with sparse data in RBMs ?
+---------------------------------------
+
+Tweaks:
+	MAIN IDEA: Use each individual user in our training data as a set of inputs into our RBM to help train it.
+			- Process each user as a part of batch during training
+
+
+[Figure]
+
+
+
+Note: We are trying to learn weights and biases to reconstruct ratings for user-movie pairs we don't know yet
+
+Note: Our visible nodes aren't 
