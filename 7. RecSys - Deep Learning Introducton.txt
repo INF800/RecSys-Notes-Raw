@@ -1,7 +1,7 @@
 
 
 
-5. Deep Learning
+Deep Learning
 -----------------
 
 IS DEEPLEARNING A OVERKILL?
