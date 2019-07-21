@@ -119,4 +119,6 @@ Difference - SVD and SVD++
 		      No matter what the rating was,
 	- SVD++ outperformed SVD
 	- Worked really well!!
-	- Spooky/Creepy - Latent features
+	- Spooky/Creepy - Latent features -The way they work
+
+
