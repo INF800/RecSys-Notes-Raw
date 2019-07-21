@@ -188,4 +188,39 @@ Example Code
 ............................................................................................................
 
 	- GridSearchCV package:
-		- Helps in hyperparameter
+		- Helps in hyperparameter tuning
+		- Defines grid of different parameters you want to try different values for - Try every possible combination
+		- 'param_grid' defines what to test
+		- 'measures' define how to test
+		- 'cv' set number of folds/cross_validation
+
+
+
+SLIM - Sparse Linear Methods (2011)
+-----------------------------------
+
+	- Exiting results!
+	- Outperformed all other recommendations (Hit Rates in TopN Recommendations)
+	- Not on applicable to movies but books, music, credit cards etc. as well
+
+
+MAIN IDEA: 'Sparse aggregation' of other things user has rated multiplied by 'sparse aggregation' of weights (magic!)
+
+
+	Unknown score for given user for given item (entire row of stuffs user has rated)
+		= [Formula]
+
+- Because user has rated only some items and weights only exist for these items - 'sparse' aggregation  
+- Extend to entire user item rating matrix: [FORMULA]
+
+
+HOW 'w' IS COMPUTED?
+		
+		- Complicated
+		- So complicated that many can't implement
+		- Similar to SVD but requires higher mathematical concepts like
+			- Matrix Frobenius Norm
+			- L1 Norm Regularisation
+		- If SLIM comes your way - Give a second look - Promising Stuff
+
+ 
