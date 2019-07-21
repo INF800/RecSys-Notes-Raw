@@ -1,0 +1,226 @@
+
+
+4. MATRIX FACTORISATION
+------------------------
+
+- Collaborative filtering is a good method. Even for ... . So, why alternative approach?	
+	- It is sensitive to NOISE DATA and SPARSE DATA
+	- Good results only if
+		- Large dataset
+		- Nice and clean
+
+
+MODEL BASED METHOD
+------------------
+
+- Instead of finding items or users similar to each other apply ML and DS
+	- Train our Model with data
+	- Predict using Model
+
+
+Matrix Factorisation
+---------------------
+
+- It has many sub categories of techniques
+- CREEPY! Manages to find broader feature of users/items on their own (eg. Actioin or Romantic) although math
+  doesn't know what to call newly found features - Just described by matrices
+
+
+MAIN IDEA: Describe users and items as combinations of different amounts of each other.
+		eg. Bob = 50% Action and 20% Comedy
+		- Matching movies with these attributes - Good for predicting
+
+
+
+SPARSE MATRIC ---> CHALLENGE --> PCA
+
+
+
+
+Principal Component Analysis
+-----------------------------
+
+- Dimentionality reduction (Can't say what newly-reduced-dimensions mean)
+- Feature extraction tool
+
+
+PCA on User Ratings
+--------------------
+
+	PCA can boil down user-item rating matrix much smaller dimensions that best
+	describes VARIANCE in data
+
+- Often, the dimensions they find correspond to features humans have learnt to associate with items (eg. Acton-ey)
+- Whatever it is about movies that causes individuals to rate them differently, PCA extracts and finds those
+  'Latent Features'
+
+
+
+[BOXES AND EXPLANATIONS]
+
+Note: if R (Orignal Matrix) has some missing values, we can reconstruct R by filling blank values!!
+      R = M Sigma(U-Transpose)	
+
+
+Sigma Matrix
+-------------
+
+	Simple diagonal matrix only used to scale the values we get into proper scale
+
+- We can multiply this sigma matrix with M or U and still R will just be product of two matrices
+- Reconstruct R to get ratings of all users for all items!
+- We can even predict ratings using dot products of 
+		M Sigma(U-Transpose) 
+
+
+
+
+
+SVD - Singular Value Decomposition
+-----------------------------------
+
+	A way of computing M, Sigma, U-Transpose all at once efficiently.
+	Get all 3 factors in one shot!
+
+	- Very accurate results
+	- Used widely during Netflix prize competion
+
+
+But wait!
+	Just before applying PCA to original matrix R, how to deal with missing values?
+	-You may fill missing values with averages of some sort... but there is a better way!
+
+	Prediction: [ R(Bob, starwars) = M(Bob) . U-Transpose(Starwars) ]
+
+	Assume we have some ratings for any given row/column in M and U-Transpose
+		- We can treat this as 'minimisation of profits'
+		- Find values of those complete rows and columns that best minimizes errors in known ratings R
+		- Use SGD (Just one way to do it)
+		- Apache Spark - different technique - ALS (Alternating Least Squares)
+
+
+Note: You might be confused here because we are talking about learning the values as matrices in M and U - Actually 
+      we are predicting ratings and not computing them directly which is what SVD does. We are not doing real 
+      SVD Recommendations because SVD can't perform on missing data.
+      Hence, it is 'SVD-Inspired-algoithm' not SVD itself. Winner of Netflix prize was a variation of SVD - SVD++
+
+
+TIPS:
+	- You can see source code for SVD algrithm used in surpiselib in github. But too complex to understand
+	- Never write your own algorithm. Odds are too high that you will mess up somewhere. Use third party
+	  library that has been used and validated by others.
+
+
+Difference - SVD and SVD++
+---------------------------
+
+	- Actual loss function used during SGD
+	- In SVD++ :  Merely rating item at all is an indication of some sort of interest in the item.
+		      No matter what the rating was,
+	- SVD++ outperformed SVD
+	- Worked really well!!
+	- Spooky/Creepy - Latent features -The way they work
+
+
+GIVEN, THE USAGE OF SVD IN NETFLIX COMPETITION AND IT'S SUCCESS; A LOT OF RESEARCH FOCUSED ON SVD. THE BELOW
+LISTED ONES ARE JUST SOME OF THE ALGORITHMS THAT WERE DEVELOPED
+
+	- i. Factorisation Matrices
+	---------------------------
+		- Well suited for predicting ratings/clicks in Recommendation System
+		- More 'General Purposed'
+		- Handles sparse data with ease. Unlike shoehorning itself into problem like SVD
+		- Available in Amazon Sage
+		- Only downsize - WORKS ONLY WITH CATEGORICAL DATA
+	- ii. TimeSVD++ 
+	----------------
+		- Predicting next item in series of events
+	- iii. Factorized Personalized Markov Chains
+	---------------------------------------------
+		- Predicting next item in series of events
+	- iv. PLSA (Promising!)
+	------------------------
+		- Extracts latent features from content itself
+		- Use PLSA on 'movie titles' and 'description' and match them up with users
+		- As they are content based, they don't do well on their own. Add it with user behaviour data
+
+
+
+
+Hyperparameter Tuning - SVD
+-----------------------------
+	
+	- Big problem in ML in general
+	- A lot of algorithms are very sensitive to parameters such as Learning rates
+	- They vary with datasets
+
+In case of SVD, Hyperparameters are:
+
+	- How many latent factors to extract?
+	- How many dimensions to reduce to?
+
+	Note: Both of them depend on the nature of data we have
+
+
+Example Code
+------------
+
+[n_factors] --> SVD(Surpriselib)
+
+.............................................................................................................
+	print('Searching for best parameters')
+
+	param_grid = { 'n_epoch' : [20, 30],		# Epochs
+		       'lr_all' : [0.005, 0.01],	# Learning Rates
+		       'n_factors' : [50, 100] } 	# No of Latent features to extract
+
+	gs = GridSearchCV(SVD, param_grid, measures=['rmse','mae'], cv=3)
+	gs.fit(evaluationData)
+
+	# Best RMSE score
+	print('Best RMSE score attained:', gs.best_score['rmse'])
+	
+	# Optimal Parameters
+	params = gs.best_params['rmse']
+	SVDtuned = SVD (n_epochs=params['n_epochs'],
+			lr_all=params['lr_all'],
+			n_factors=params['n_factors'])
+............................................................................................................
+
+	- GridSearchCV package:
+		- Helps in hyperparameter tuning
+		- Defines grid of different parameters you want to try different values for - Try every possible combination
+		- 'param_grid' defines what to test
+		- 'measures' define how to test
+		- 'cv' set number of folds/cross_validation
+
+
+
+SLIM - Sparse Linear Methods (2011)
+-----------------------------------
+
+	- Exiting results!
+	- Outperformed all other recommendations (Hit Rates in TopN Recommendations)
+	- Not on applicable to movies but books, music, credit cards etc. as well
+
+
+MAIN IDEA: 'Sparse aggregation' of other things user has rated multiplied by 'sparse aggregation' of weights (magic!)
+
+
+	Unknown score for given user for given item (entire row of stuffs user has rated)
+		= [Formula]
+
+- Because user has rated only some items and weights only exist for these items - 'sparse' aggregation  
+- Extend to entire user item rating matrix: [FORMULA]
+
+
+HOW 'w' IS COMPUTED?
+		
+		- Complicated
+		- So complicated that many can't implement
+		- Similar to SVD but requires higher mathematical concepts like
+			- Matrix Frobenius Norm
+			- L1 Norm Regularisation
+		- If SLIM comes your way - Give a second look - Promising Stuff
+
+ 
