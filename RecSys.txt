@@ -1,141 +1,42 @@
 
 
 
-Deep Learning
------------------
-
-IS DEEPLEARNING A OVERKILL?
-
-	- Just because new tech is hot, it doesn't mean it is right soultion for every problem
-	- DL is shows good performance in
-		- Actions similar to our brain
-		- Image recognition
-		- Series/Pattern recognition
-	- Neural nets are fundamentally matrix operations (proved by TF). And there are already well established 
-	  matrix factorisation techniques for recommendation systems that fundamentally do something similar.
-	  eg. SVD - We find matrices using weights calculated by SGD! (Simailar to DL)
-
-Hence, DL CAN BE APPLIED TO RECOMMENDATION SYSTEMS
-	- It is just some kind of pattern recognition where people are involved.
-	- Amazon opensourced neural nets based DSSTNE (where huge neural nets deal with sparse data)
-	- Even by small margins, in some researches DL outperformed SVD 
+ >>> Contemporary neural nets for RecSys is possible but not without challenges! <<<
 
 
 
-
-5. RESTRICTED BOLTZMANN MACHINES
---------------------------------
-
-	- The grand daddy of neural nets in recommender systems 
-	- Since 2007 - long before the resurgance of AI
-	
-
-Netflix Prize: 
-	- Matrix Factorisation and RBMs had best performance as measured by RMSE. Scores were almost identical.
-	- Netflix found - By combining Matrix Factorisation with RBMs - EVEN BETTER RESULTS!!!
-
-Paper: Restricted Boltzmann Machines for Collaborative Filtering (Toronto)
-
-
-
-
-
-RBM
----
-
-	- One of simplest neural nets
-	- 2 layers
-		i. Visible
-		ii. Hidden
-
-[FIGURE]
-
-Note: Neurons in same layer cannot communicate with each other directly. Hence termed "Restricted". This architecture
-      is common in modern nets. But unusual back then and didn't exist in earlier boltzmann machines
-
-- Termed 'Boltzmann' because of use of Boltzmann Distributin Function (Used as sampling function)
-- Trained by
-	i. Forward pass
-	ii. Backward pass - inputs reconstructed
-  (The above steps are performed iteratively until weights and biases reduce error significantly)
-
-
-RBM Backward Pass
-------------------
-
-[Figure]
-
-- We share weights for forward and backward pass
-- But use two sets of biases 
-	i. Hidden Bias - Used in forward pass
-	ii. Visible Bias - Used in backward pass
-- Main difference is that we read outputs at lower level during backward pass; Opposed to taking them the other side in modern
-  nets
-
-
-RBM ----> MNIST ----> Works well and good
-
-RBM ----> RecSys ----> Weird Results!
-		       - Because of SPARSE DATA
-		         (Very sparse in most of the cases)
-
-
-How to deal with sparse data in RBMs ?
----------------------------------------
-
-Tweaks:
-	MAIN IDEA: Use each individual user in our training data as a set of inputs into our RBM to help train it.
-			- Process each user as a part of batch during training
+6. AUTORECS - AUTOENCODERS FOR RECOMMENDATIONS
+----------------------------------------------
 
 
 [Figure]
 
+Note: In paper they trained once per item  - Feeding in ratings from each user for that item in input layer.
+      Sigmoid activation functioin was used in output layer
 
 
-Note: We are trying to learn weights and biases to reconstruct ratings for user-movie pairs we don't know yet
-
-Note: Our visible nodes arent just sample nodes taking in a simple input. Ratings are categorical data.
-      So, we will treat each individual ratings as FIVE NODES
-	eg. Five star = [0|0|0|0|1]
+	- Slightly better results than RBM
+	- Here, compared to RBM, we have different sets of weights as well(not just different sets of biases)
+	- Easier to implement in modern frameworks such as TF or Keras
 
 
--> Train RBM --> Wts/Biases --> Reconstruct user ratings
--> For new user, run it again with known ratings of the new user
--> But biig problem - SPARSE DATA
+
+CHALLENGE: SPARSICITY
+---------
+
+
+IN PAPER: "We only consider contribution of observed ratings"
+	   
+	   i.e. They were careful to process each path through this neural net individually only propogating information
+	   from ratings that actually exist in training data and ignoring contribution input nodes corresponding
+	   to missing data.
+
+	=> It is hard to implementin TF. Even if it has sparse tensors, there is no simple way to restrict chain
+	   of matrix multiplications and additions needed to implement in neural net to just input nodes with 
+	   actual data in them.
+	   Implementation in TF or Keras ignores that problem and models missing ratings as zeros. This gives
+	   decent results but has a fundamental problem in it!
 		
-	If we are training RBM on every possible combination of users of movies, most of the data will be missing.
-	Because most of the movies have not been rated at all by a specific user. We want to predict rating for 
-	every movie though. So we need to leave space for all of them
-
-	If N movies --> (N*5) Visible nodes,
-	for any given user most of them are undefined or empty
-
-	Solution: Exclude any missing rating from processsing while training RBM
-		  (See partial weights in figure)
-
-- The above solution is a tricky thing to do as most of frameworks like tensorflow assume you want to process 
-  everyting in parallel all the time.
-	- They aren't really built for sparse data
-	- BUT THERE ARE WAYS TO TRICK IT
-
-- (Note weights in figure) As we are training our RBM with given user's known ratings, we only attempt to learn
-  weights and biases used for the movies user actually rated.
-	As we iterate through training on all other users we fill in all other weights and biases as we go
-
-
--> TF actually has SPARSE TENSOR which you can use. There are also other frameworks such as DSSTNE for Sparse Data.
-
--> RBMs will probably become thing of the past as with modern nets, we can treat sparse data as complete data
-
-->How to best train an RBM with huge amounts of sparse data?
-
-	- Gradient descent needs very efficient expectation function to optimize on; and for RecSys, this
-	  functon is called "CONTRASTIVE DIVERGENCE"
-		Contrastive Divergence samples probability distribution during training using "GIBBS SAMPLER"
-
-	- MAIN IDEA:
-		We only train it on the ratings that actually exist but reuse resulting weights and biases across
-		other users to fill in missing ratings we want to get
-
-Note: In paper RMSE was used to measure RBM perfomance. 
-
+	This architecture - "AUTOENCODERS"
+ 
+- Encoding Inputs: Building up 
