@@ -1,105 +1,179 @@
 
 
 
-7. DSSTNE - Deep Scalable Sparse Tensor Neural Engine
------------------------------------------------------
+9. REAL WORLD CHALLENGES
+-------------------------
+
+There many real world challenges for recommender systems 
 
 
-	- Works excellently well with sparse data
-	- No code required!
-
-How to use?
-	- Convert data into specific format
-	- Write configuration file
-
-
-
-SAMPLE config file
-..............................................................................................................
-{
-"version": 0.7,
-"Name"   : "AE",
-"Kind"   : "FeedForward",
-"SparsenessPenality" :{
-	"p" : 0.5,
-  	"beta" : 2.0
-},
-"ShuffleIndices": false,
-"Denoising":{
-	"p" : 0.2
-},
-"ScaledMarginalCrossEntropy":{
-"oneTarget" : 1.0,
-"zeroTarget": 0.0,
-"oneSclae": 1.0,
-"zeroScale": 1.0
-},
-"Layers":[
-{"Name":"Input", "Kind":"Input", "N": "auto", "DataSet":"gl_input", "sparse":true},
-{"Name":"Hidden", "Kind":"Hidden", "Type": "FullyConnected", "N":128, "Activation":"Sigmoid", "sparse":true},
-{"Name":"Output", "Kind":"Output", "Type": "FullyConnected", "DataSet":"gl_input", "N": "auto", "Activation":"Sigmoid", "sparse":true}
-],
-"ErrorFunction": "ScaledMarginalCrossEntropy"
-}
-..............................................................................................................
+	- Cold Start Problem
+	- Stoplists
+	- Filter Bubbles
+	- Transparancy and Trust
+	- Outliers
+	- Gaming the system
+	- Implicit data - Explicit problems
+	- International laws and Markets
+	- Dealing with time
+	- Value aware recommendations
 
 
 
-- "Kind" is set to feed forward auto encoder; Specifically - "Sparse Encders"
-- Here, sparsity = constraints on hidden layer to force find patterns even if >>>> hidden nodes
-- "SparsenessPenality" defines above metioned 'constraints'. More details can be found at Andrew Ng's CS294A (Sparse Autoencoders)
+1. COLD START PROBLEM
+-----------------------
 
-Note:
------	Here,
-		1 star ----> intersted (1)
-		2 star ----> intersted (1)
-		3 star ----> intersted (1)
-		4 star ----> intersted (1)		
-		5 star ----> intersted (1)
+	-> new user (what to recommend?)
+	-> new items (Whom to recommend?)
 
-		No Rating ----> Not intersted (0)
+	SOLUTIONS - New User
+	i. Use implict data
+	ii. Browser cookies - To identify users
+	    User Sessions
+	iii. Geo-IP
+		- Similar items for similar geography may seem absurd idea but
+		  it is better than recommending nothing. 
+		- Moreover, think about people buying more sweat shirts in north 
+		  than equators or think about seasonal products
+	iv. Recommend top sellers / do promotions
+	v. Interview the user
+		- Was used by Netflix 
+		- Pintrest
 
-	=> This approach works surprisingly well!
-		(You may try same approach with RBMs as well)
+	SOLUTIONS - New Items
+	i. Just don't worry about it
+		- May show up in search results / someone may search it because of promotions
+		- In practice, perfectly reasonable. But some researchers proposed other 
+		  solutions listed below
+	ii. Content based Recommendations
+		- Using it alone is not a good idea
+		- Augment user behaviour data with this - Solves the cold start problem right there
+	iii. Map content attributes to hidden features found by matrix factorisation / deep learning
+	     and use user behaviour data as a support
+		- Complicated idea (eg. learnAROMA)
+	iv. Random Exploration
+		- Attempt to use random slots for recommendations to gather more information
+		- Not really a good approach
 
 
 
-- DSSTNE available in github - for GPU, try in linux
-- Data in NetCDF format
-	- Arrange data : Every row must have single user followed by list of rating inputs for that user
-	<userID> <tab> <colon separated list of each itemID user rated>
-	:
-	:
-	:
-	(First row ----> First input node)
+2. STOPLISTS
+-------------
 
+	REMEBER: It is easier to offend people without intending to even do so
 
--> Amazon gives AWK Script
+	MAIN IDEA: Stoplists are just used to not recomment unwanted or bad items.
 
-	awk -f convert_ratings.awk ml-20m-ratings.csv > ml-ratings
+	In 2006, Walmart's website paired 'Martin Luther King' with lots of different movies including
+	movies like 'Planet of the apes'
+ 		- Many didn't like it
+		- Walmart had to apologize and donate significant amount of money
+		- Scraped entire Recommendations system (Probalbly people might have lost jobs!)
 	
-	generate NetCDF -d gl_input -i ml-ratings -o gl_input.nc -fn
+	There are topics too touchy for us to deal with. This arises STOPLISTS
+
+	- Based on some keywords (in title or description or category) our recommendation system shouldn't 
+	  even know the items exist! (Avoid them to get into training process)
+
+	Note: You don't want to endup on front page of newspaper!
+
+	- Some keywords include topics pertaining to
+		- Adult content
+		- Vulgarity
+		- Legally prohibited topics
+		- Terrorism / Political extremism
+		- Bereavement / Medical
+		- Drug use
+		- Religion
+
+	- Trump example - "Played" with Recommendation System
+
+
+3. FILTER BUBBLES
+-----------------
+
+	- Societal problems that arise when you show people things that appeal to their "existing interests"!
+		eg. I am stuck with BeYouNick
+	
+	- It is called filter bubble because the content to be presented is filtered such that it keeps them
+	  'within bubble of pre-existing interests'
+
+	SOLUTION
+	-> 'Extra' diversity can help them get out of bubble
 
 
 
---------------------------------------------
+4. TRANSPARANCY AND TRUST
+-------------------------
+	Note: Both are inter-related
+
+	- Make sure your users recognize atleast some of top N recommendations
+	- Allow transparancy to gain more trust - "Why you recommended an item must be made visible"
+		- But when deaing with Matrix factorisation(Latent Features) or Deep Learning, it can't
+		  be communicated to user why an item was recommended
+		- Good thing but leads to more work
 
 
-8. Amazon Sage Maker Services
--------------------------------
+5. OUTLIERS
+-------------
 
-- Component of Amazon's web services 
-- Create notebooks on AWS (Large scale Models)
+	Not only restricted to RecSys but it is a general problem
+	
+	- Results are as good as data you feed into model
+	- Filter out outliers that might skew your results in unnatural ways
+		- What if a bot tries to "play" with ratings impacting recommendations significantly?
+		- Not always malicious behaviour, it might be a web crawler polluting your data or your own 
+		  internal tools
+		- People who review items for living
+		- Institutional buyers 
+
+	[FIND OUT OUTLIERS]
+		|
+		|
+		V
+	[UNDERSTAND THEM]
+		|
+		|
+		V
+	[FILTER THEM OUT]
 
 
-	[BUILD]
-	   |
-	   |
-	   V
-	[TRAIN]
-	   |
-	   |
-	   V
-        [DEPLOY]
 
-- protobuf is the data format
+6. GAMING THE SYSTEM
+---------------------
+
+	- If recommendations cause greater purchase, makers of items look for ways to game your system into
+	  recommending their item more / not recommending others' items
+	- Hacker may do it for the sake of just doing it out of amusement
+	- eg. Google Bombs
+
+	SOLUTION
+	
+	i. Only consider people who spent real money on item
+		- Voting with wallets is a stong indication of interest
+	ii. If no purchase data, you can still take precautions 
+		- eg. star review from people whopurchased / consumed items
+	iii. If you allow people to rate items they actually haven't seen/used - you are open to attacks
+	iv. Using click data should be your last choice. As it is trivially easy to fake it
+		"Always be wary of click-data"
+		Even not from bots, click-data has it's own set of problems
+
+
+
+7. IMPLICIT DATA - EXPLICIT PROBLEMS
+------------------------------------
+	
+	- Implicit data - eg. clickstream like clicks on images
+		- Fraught with problems
+		- Be extermely skeptical about building recommendation system that solely depend on click data
+			It is an experienced advice that click-data is
+				 	- Susceptible to gaming
+					- Has human behaviour problems
+
+	"If you ever build a system that recommend products based on product images that people click on when
+	 they see them in online ad; I promise you that what you build  will end up as pornogrphy detection system.
+	There won't be anything you can do about it even if you try to filter sexual content, you will be lead
+	to things with sexual anatomy!"
+					- Experienced Advice (Seen this happen more than once!!)
+	
+	
