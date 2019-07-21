@@ -1,0 +1,136 @@
+
+
+
+ >>> Contemporary neural nets for RecSys is possible but not without challenges! <<<
+
+
+
+6. AUTORECS - AUTOENCODERS FOR RECOMMENDATIONS
+----------------------------------------------
+
+
+[Figure]
+
+Note: In paper they trained once per item  - Feeding in ratings from each user for that item in input layer.
+      Sigmoid activation functioin was used in output layer
+
+
+	- Slightly better results than RBM
+	- Here, compared to RBM, we have different sets of weights as well(not just different sets of biases)
+	- Easier to implement in modern frameworks such as TF or Keras
+
+
+
+CHALLENGE: SPARSICITY
+---------
+
+
+IN PAPER: "We only consider contribution of observed ratings"
+	   
+	   i.e. They were careful to process each path through this neural net individually only propogating information
+	   from ratings that actually exist in training data and ignoring contribution input nodes corresponding
+	   to missing data.
+
+	=> It is hard to implementin TF. Even if it has sparse tensors, there is no simple way to restrict chain
+	   of matrix multiplications and additions needed to implement in neural net to just input nodes with 
+	   actual data in them.
+	   Implementation in TF or Keras ignores that problem and models missing ratings as zeros. This gives
+	   decent results but has a fundamental problem in it!
+		
+	This architecture - "AUTOENCODERS"
+
+ 
+- Encoding Inputs: Building up weights and biases between input and hidden layer is refered to as encoding the input.
+		   We are encoding patterns.
+- Decoding Outputs: Reconstructing output in the weights between hidden and the output layers
+
+	Hence,
+		I set of weights  ---> Encoding stage
+		II set of weights ---> Decoding stage
+
+	In RBM we encoded on forward pass and decoded on backward pass.
+	So, conceptually both are similar
+
+
+
+SOME OTHER IDEAS
+-----------------
+
+	- Deep neural nets with large number of hidden layers and
+	- One hot encoding user and item data into one input layer
+
+
+	[ITEMS AND USERS ARE FLATTENED]
+		       |
+		       | 
+		       |
+		       V
+	        [DROPOUT LAYER] (Prevents overfitting)
+		       |
+		       | Concatenated and fed
+		       |
+		       V
+		[DEEP NEURAL NET]
+ 
+
+	PROBLEM: No difference between missing ratings and ratings with zero value.
+
+
+
+Note: The above idea was unable to outperform matrix factorisation because of data sparcity
+
+Note: Amazon's DSSTNE actually solved the problem of handling missing ratings! RESULTS ARE VERY GOOD!!
+
+
+-> Our implementation is different than in paper
+-> Missing values as zero ratings - Messing Predictions 
+	Our network can't differentiate between missing rating and zero rating - Thinks people hate pretty much everything!!
+-> Complex algorithm wont help; unless we have enough data
+
+
+Note: Till now in our exercises, RBMs and AUTORECS failed our expectations. But more is to come
+
+
+
+
+
+SESSION BASED RECOMMENDATIONS WITH RNN
+--------------------------------------
+
+ - A very complex approach!
+
+
+RNN
+----
+	- Good at patterns and sequences of data (Predicting what comes next)
+	- Compicated beasts.	
+		Instead of neurons, RNN depend on complicated structures such as LSTMs or GRUs(Gated Recurrent Units)
+	- GRU4Rec
+
+Note: This is a complex solution. The more simple our solution is, the better it will be.
+
+ 
+
+
+DEEP FACTORISATION MACHINES
+----------------------------
+
+	- More general purpose than SVD
+	- Sometimes finds features that SVD can't
+	- Deep Neural Nets + Factorisation Machines
+	- It is a hybrid approach which takes best of both worlds and outperform the both!
+
+Note: Uses HIGHER-ORDER FEATURE INTERACTIONS. There are LOWER-ORDER FEATURES as well but deep nets
+      are better with higher-order ones.
+
+
+REMEMBER: Recommender Algorithms can perpetuate biases that exist in training data and even amplify
+	  them!!
+
+
+- It is an ensemble approach - Mixture of two algorithms
+	- Better to run two different alorithms in parallel and combine results in the end
+	- The above mentioned parallel approach is not only good for accuracy but also works as backup
+
+
+		 
