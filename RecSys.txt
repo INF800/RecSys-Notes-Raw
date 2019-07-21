@@ -122,3 +122,70 @@ Difference - SVD and SVD++
 	- Spooky/Creepy - Latent features -The way they work
 
 
+GIVEN, THE USAGE OF SVD IN NETFLIX COMPETITION AND IT'S SUCCESS; A LOT OF RESEARCH FOCUSED ON SVD. THE BELOW
+LISTED ONES ARE JUST SOME OF THE ALGORITHMS THAT WERE DEVELOPED
+
+	- i. Factorisation Matrices
+	---------------------------
+		- Well suited for predicting ratings/clicks in Recommendation System
+		- More 'General Purposed'
+		- Handles sparse data with ease. Unlike shoehorning itself into problem like SVD
+		- Available in Amazon Sage
+		- Only downsize - WORKS ONLY WITH CATEGORICAL DATA
+	- ii. TimeSVD++ 
+	----------------
+		- Predicting next item in series of events
+	- iii. Factorized Personalized Markov Chains
+	---------------------------------------------
+		- Predicting next item in series of events
+	- iv. PLSA (Promising!)
+	------------------------
+		- Extracts latent features from content itself
+		- Use PLSA on 'movie titles' and 'description' and match them up with users
+		- As they are content based, they don't do well on their own. Add it with user behaviour data
+
+
+
+
+Hyperparameter Tuning - SVD
+-----------------------------
+	
+	- Big problem in ML in general
+	- A lot of algorithms are very sensitive to parameters such as Learning rates
+	- They vary with datasets
+
+In case of SVD, Hyperparameters are:
+
+	- How many latent factors to extract?
+	- How many dimensions to reduce to?
+
+	Note: Both of them depend on the nature of data we have
+
+
+Example Code
+------------
+
+[n_factors] --> SVD(Surpriselib)
+
+.............................................................................................................
+	print('Searching for best parameters')
+
+	param_grid = { 'n_epoch' : [20, 30],		# Epochs
+		       'lr_all' : [0.005, 0.01],	# Learning Rates
+		       'n_factors' : [50, 100] } 	# No of Latent features to extract
+
+	gs = GridSearchCV(SVD, param_grid, measures=['rmse','mae'], cv=3)
+	gs.fit(evaluationData)
+
+	# Best RMSE score
+	print('Best RMSE score attained:', gs.best_score['rmse'])
+	
+	# Optimal Parameters
+	params = gs.best_params['rmse']
+	SVDtuned = SVD (n_epochs=params['n_epochs'],
+			lr_all=params['lr_all'],
+			n_factors=params['n_factors'])
+............................................................................................................
+
+	- GridSearchCV package:
+		- Helps in hyperparameter
