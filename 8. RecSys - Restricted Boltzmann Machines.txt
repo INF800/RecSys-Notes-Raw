@@ -1,28 +1,6 @@
 
 
 
-Deep Learning
------------------
-
-IS DEEPLEARNING A OVERKILL?
-
-	- Just because new tech is hot, it doesn't mean it is right soultion for every problem
-	- DL is shows good performance in
-		- Actions similar to our brain
-		- Image recognition
-		- Series/Pattern recognition
-	- Neural nets are fundamentally matrix operations (proved by TF). And there are already well established 
-	  matrix factorisation techniques for recommendation systems that fundamentally do something similar.
-	  eg. SVD - We find matrices using weights calculated by SGD! (Simailar to DL)
-
-Hence, DL CAN BE APPLIED TO RECOMMENDATION SYSTEMS
-	- It is just some kind of pattern recognition where people are involved.
-	- Amazon opensourced neural nets based DSSTNE (where huge neural nets deal with sparse data)
-	- Even by small margins, in some researches DL outperformed SVD 
-
-
-
-
 5. RESTRICTED BOLTZMANN MACHINES
 --------------------------------
 
