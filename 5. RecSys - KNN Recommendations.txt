@@ -27,7 +27,7 @@ offline accuracy of system using Test/Train or Cross-Validation - Useful in rese
 
 
 
-
+q
 User Based KNN
 ---------------
 
@@ -67,7 +67,7 @@ Item Based KNN
 
 
 [Formula]
-	- Better off with smaller approach
+	- Better off with simpler approach
 	- This is more like shoveling into framework
 
 Note: Above all, offline metrics cannot be pure base line for choosing one framework
