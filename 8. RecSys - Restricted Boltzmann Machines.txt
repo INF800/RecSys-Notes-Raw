@@ -108,7 +108,7 @@ Note: Our visible nodes arent just sample nodes taking in a simple input. Rating
 ->How to best train an RBM with huge amounts of sparse data?
 
 	- Gradient descent needs very efficient expectation function to optimize on; and for RecSys, this
-	  functon is called "CONTRASTIVE DIVERGENCE"
+	  function is called "CONTRASTIVE DIVERGENCE"
 		Contrastive Divergence samples probability distribution during training using "GIBBS SAMPLER"
 
 	- MAIN IDEA:
