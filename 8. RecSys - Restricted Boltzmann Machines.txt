@@ -92,7 +92,7 @@ Note: Our visible nodes arent just sample nodes taking in a simple input. Rating
 		  (See partial weights in figure)
 
 - The above solution is a tricky thing to do as most of frameworks like tensorflow assume you want to process 
-  everyting in parallel all the time.
+  everything in parallel all the time.
 	- They aren't really built for sparse data
 	- BUT THERE ARE WAYS TO TRICK IT
 
