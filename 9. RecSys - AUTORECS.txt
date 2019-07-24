@@ -31,7 +31,7 @@ IN PAPER: "We only consider contribution of observed ratings"
 	   from ratings that actually exist in training data and ignoring contribution input nodes corresponding
 	   to missing data.
 
-	=> It is hard to implementin TF. Even if it has sparse tensors, there is no simple way to restrict chain
+	=> It is hard to implement in TF. Even if it has sparse tensors, there is no simple way to restrict chain
 	   of matrix multiplications and additions needed to implement in neural net to just input nodes with 
 	   actual data in them.
 	   Implementation in TF or Keras ignores that problem and models missing ratings as zeros. This gives
