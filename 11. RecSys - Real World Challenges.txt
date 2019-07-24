@@ -191,7 +191,7 @@ There many real world challenges for recommender systems
 8. INTERNATIONAL LAWS AND MARKETS
 ----------------------------------
 
-	- Cultural / gegrphical differneces while recommending
+	- Cultural / geogrphical differneces while recommending
 	- Filter - Based on licensing or availability
 	- Privacy laws
 
@@ -238,7 +238,7 @@ There many real world challenges for recommender systems
 
 
 
-WE CAN KEEP ON GOIN TO TELL ABOUT REAL WORLD CHALLENGES...
+WE CAN KEEP ON GOING TO TELL ABOUT REAL WORLD CHALLENGES...
 
 
 
