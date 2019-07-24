@@ -27,7 +27,7 @@ CHALLENGE: SPARSICITY
 
 IN PAPER: "We only consider contribution of observed ratings"
 	   
-	   i.e. They were careful to process each path through this neural net individually only propogating information
+	   i.e. They were careful to process each path through this neural net individually only propagating information
 	   from ratings that actually exist in training data and ignoring contribution input nodes corresponding
 	   to missing data.
 
