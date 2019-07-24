@@ -210,7 +210,7 @@ There many real world challenges for recommender systems
 
 	- Open topic in research area - PUBLISH PAPERS - GOOD TOPIC!
 
-	- You can't easily or generally take 'Recency of Rating' into acount
+	- You can't easily or generally take 'Recency of Rating' into account
 		- Netflix confirmed that these kinds of temporal dynamics are more important
 			Someone's tastes collected yesteday are better indications than the ones collected previous year.
 	- Weigh ratings by their age by some sort of exponential decay - leads to improvement of quality of recommendations
